@@ -97,12 +97,6 @@ var app = new Vue({
       this.user = JSON.parse(user)
     }
 
-
-    // }
-    // if (!tasks) {
-    //     localStorage.setItem('tasks', JSON.stringify([]))
-    // } else {
-    //     this.tasks = JSON.parse(tasks)
-    // }
+    this.tasks = !!tasks ? JSON.parse(tasks) : []
   },
 });
