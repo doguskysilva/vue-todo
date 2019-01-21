@@ -2,66 +2,95 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Todo App</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
-    <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
-        crossorigin="anonymous">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Todo App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+  <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+    crossorigin="anonymous">
 </head>
 
 <body>
-    <div class="container" id="app">
+
+  <div class="container" id="app">
+    <transition name="fade">
+
+      <div class="welcome" v-if="!user.active">
+        <div class="row">
+          <div class="column column">
+            <h2>Welcome to <b>Vue Todo</b></h2>
+            <br>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column column-25">
+            <input type="text" v-model="user.name" v-focus placeholder="Who are you?">
+          </div>
+          <div class="column column-10">
+            <button class="button" @click="createAccount">Create account</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="board" v-else>
         <br>
-        <h3>Hello <b>Douglas</b>, your tasks is here</h3>
-        <hr>
+        <h3>
+          Hello <b>{{user.name}},</b>
+          <span v-if="tasks.length === 0"><br>You haven't tasks! Let's go start!</span>
+          <span v-else>sss</span>
+        </h3>
+        <hr v-if="tasks.length > 0">
         <div class="row">
-            <div class="column column-100">
-                <todo-item @update="update" @remove="remove" v-for="task in tasks" :key="task.id" :task="task"></todo-item>
-            </div>
+          <div class="column column-100">
+            <todo-item @update="update" @remove="remove" v-for="task in tasks" :key="task.id" :task="task"></todo-item>
+          </div>
         </div>
         <hr>
         <div class="row">
-            <div class="column column-0">
-                <input v-model="task.text" type="text" placeholder="New task">
-            </div>
-            <div class="column column-10">
-                <button class="button" @click="save()">
-                    <i class="far fa-save fa-lg"></i>
-                </button>
-            </div>
+          <div class="column column-0">
+            <input v-model="task.text" type="text" placeholder="New task">
+          </div>
+          <div class="column column-10">
+            <button class="button" @click="save()">
+              <i class="far fa-save fa-lg"></i>
+            </button>
+          </div>
         </div>
+      </div>
+
+    </transition>
+  </div>
+
+  <script type="text/x-template" id="todo-item">
+    <div class="row">
+      <div class="column column-80">
+        <p @click="edit()" v-if="!is_edit">
+          {{task.text}}
+        </p>
+        <input v-else v-model="new_text" @keyup.enter="save()" @keyup.esc="cancel()" v-focus>
+      </div>
+      <div class="column column-10">
+        <button v-if="is_edit" class="button button-outline" @click="save()" title="Salvar">
+          <i class="far fa-save fa-lg"></i>
+        </button>
+      </div>
+      <div class="column column-10">
+        <button v-if="!is_edit" class="button button-outline" @click="remove()" title="Remover">
+          <i class="fas fa-trash"></i>
+        </button>
+        <button v-else class="button button-outline" @click="cancel()" title="Cancelar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
     </div>
+  </script>
 
-    <script type="text/x-template" id="todo-item">
-        <div class="row">
-            <div class="column column-80">
-                <p @click="edit()" v-if="!is_edit">
-                    {{task.text}}
-                </p>
-                <input v-else v-model="new_text" @keyup.enter="save()" @keyup.esc="cancel()" v-focus>
-            </div>
-            <div class="column column-10">
-                <button v-if="is_edit" class="button button-outline" @click="save()" title="Salvar">
-                    <i class="far fa-save fa-lg"></i>
-                </button>
-            </div>
-            <div class="column column-10">
-                <button v-if="!is_edit" class="button button-outline" @click="remove()" title="Remover">
-                    <i class="fas fa-trash"></i>
-                </button>
-                <button v-else class="button button-outline" @click="cancel()" title="Cancelar">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-    </script>
-
-    <script src="assets/main.js"></script>
+  <script src="assets/main.js"></script>
+  <link rel="stylesheet" href="assets/main.css">
 </body>
 
 </html>
