@@ -28,7 +28,7 @@
         </div>
         <div class="row">
           <div class="column column-25">
-            <input type="text" v-model="user.name" v-focus placeholder="Who are you?">
+            <input v-model="user.name" v-focus placeholder="Who are you?">
           </div>
           <div class="column column-10">
             <button class="button" @click="createAccount">Create account</button>
@@ -41,7 +41,7 @@
         <h3>
           Hello <b>{{user.name}},</b>
           <span v-if="tasks.length === 0"><br>You haven't tasks! Let's go start!</span>
-          <span v-else>sss</span>
+          <span v-else>your tasks is here!</span>
         </h3>
         <hr v-if="tasks.length > 0">
         <div class="row">
@@ -52,7 +52,7 @@
         <hr>
         <div class="row">
           <div class="column column-0">
-            <input v-model="task.text" type="text" placeholder="New task">
+            <input v-model="task.text" @keyup.enter="save()" @keyup.esc="task.text = ''" placeholder="New task">
           </div>
           <div class="column column-10">
             <button class="button" @click="save()">
