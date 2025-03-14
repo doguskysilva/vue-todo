@@ -11,16 +11,16 @@ describe('HelloWorld', () => {
   })
 
   it('renders properly', () => {
-    const wrapper = mount(HelloWorld, { props: { msg: 'Hello Vitest' } })
-    expect(wrapper.text()).toContain('Hello Vitest')
+    const wrapper = mount(HelloWorld, { props: { msg: 'Hello World' } })
+    expect(wrapper.text()).toContain('Hello World')
     expect(wrapper.findComponent({ name: 'UserDialog' }).exists()).toBe(true)
   })
 
   it('shows user name when use is set', () => {
     const { setUser } = useUserStore()
     setUser({ name: 'Douglas Silva', id: 'any-id' })
-    const wrapper = mount(HelloWorld, { props: { msg: 'Hello Vitest' } })
-    expect(wrapper.text()).toContain('Welcome Douglas Silva')
+    const wrapper = mount(HelloWorld, { props: { msg: 'Hello World' } })
+    expect(wrapper.text()).toContain('Welcome Douglas')
     expect(wrapper.findComponent({ name: 'UserDialog' }).exists()).toBe(false)
   })
 })
