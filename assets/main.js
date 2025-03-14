@@ -1,19 +1,19 @@
 Vue.component('todo-item', {
   props: {
-    task: {}
+    task: {},
   },
   directives: {
     focus: {
       inserted: function (el) {
         el.focus()
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       is_edit: false,
       old_text: '',
-      new_text: ''
+      new_text: '',
     }
   },
   methods: {
@@ -26,16 +26,16 @@ Vue.component('todo-item', {
       this.is_edit = false
     },
     save() {
-      this.task.text = this.new_text
+      //this.task.text = this.new_text
       this.is_edit = false
       this.$emit('update')
     },
     remove() {
       this.$emit('remove', this.task.id)
-    }
+    },
   },
-  template: '#todo-item'
-});
+  template: '#todo-item',
+})
 
 var app = new Vue({
   el: '#app',
@@ -43,14 +43,14 @@ var app = new Vue({
     focus: {
       inserted: function (el) {
         el.focus()
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       user: {
         name: null,
-        active: false
+        active: false,
       },
       task: {
         id: '',
@@ -61,13 +61,13 @@ var app = new Vue({
   },
   methods: {
     createAccount() {
-      if (!!this.user.name) {
+      if (!this.user.name) {
         this.user.active = true
         localStorage.setItem('user', JSON.stringify(this.user))
       }
     },
     remove(id) {
-      this.tasks = this.tasks.filter(x => x.id !== id)
+      this.tasks = this.tasks.filter((x) => x.id !== id)
       this.sync_storage()
     },
     update() {
@@ -87,7 +87,7 @@ var app = new Vue({
     },
     sync_storage() {
       localStorage.setItem('tasks', JSON.stringify(this.tasks))
-    }
+    },
   },
   mounted() {
     let user = localStorage.getItem('user')
@@ -97,6 +97,8 @@ var app = new Vue({
       this.user = JSON.parse(user)
     }
 
-    this.tasks = !!tasks ? JSON.parse(tasks) : []
+    this.tasks = !tasks ? JSON.parse(tasks) : []
   },
-});
+})
+
+console.log(app)
