@@ -1,17 +1,33 @@
 <script setup lang="ts">
+import { useUserStore } from '@/stores/user'
+import { ref } from 'vue';
+import UserDialog from './UserDialog.vue';
+import { createUser } from '@/domain/logic/user';
 defineProps<{
   msg: string
 }>()
+
+const userStore = useUserStore()
+const showDialog = ref(!userStore.user?.name)
+
+const handleUserSubmit = (name: string) => {
+  userStore.setUser(createUser(name))
+  showDialog.value = false
+}
+
+const closeDialog = () => {
+  showDialog.value = false
+}
+
 </script>
 
 <template>
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
-    <h3>
-      You’ve successfully created a project with
-      <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
+    <h3 v-if="userStore.user">
+      Welcome {{ userStore.user.name }}, to your Vue Todo App!
     </h3>
+    <UserDialog v-if="showDialog" @submit="handleUserSubmit" @close="closeDialog" />
   </div>
 </template>
 
@@ -33,6 +49,7 @@ h3 {
 }
 
 @media (min-width: 1024px) {
+
   .greetings h1,
   .greetings h3 {
     text-align: left;
