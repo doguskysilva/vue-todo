@@ -25,7 +25,7 @@ const closeDialog = () => {
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3 v-if="userStore.user">
-      Welcome {{ userStore.user.name }}, to your Vue Todo App!
+      Welcome {{ userStore.user.name.split(' ')[0] }}, to your VueTodo App!
     </h3>
     <UserDialog v-if="showDialog" @submit="handleUserSubmit" @close="closeDialog" />
   </div>

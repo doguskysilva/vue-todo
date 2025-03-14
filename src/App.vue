@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+import { getGreetingMessage } from './domain/logic/time'
+
+const greetingMessage = ref(getGreetingMessage(new Date()))
 </script>
 
 <template>
@@ -8,7 +12,7 @@ import TheWelcome from './components/TheWelcome.vue'
     <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld :msg="greetingMessage" />
     </div>
   </header>
 
