@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import TaskItem from '@/components/TaskItem.vue'
-import { Status, type Task } from '@/domain/models/task'
+import { Status } from '@/domain/models/task'
 import { generateTask } from '@/test-utils/generators'
 
 describe('TaskItem.vue', () => {

@@ -3,8 +3,8 @@ import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import AllTasks from '@/components/AllTasks.vue'
 import { useTaskStore } from '@/stores/task'
-import { generateEntities, generateTask } from '@/test-utils/generators'
-import { Status, type Task } from '@/domain/models/task'
+import { generateTask } from '@/test-utils/generators'
+import { Status } from '@/domain/models/task'
 
 describe('AllTasks.vue', () => {
   beforeEach(() => {
