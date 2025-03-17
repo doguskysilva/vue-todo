@@ -4,7 +4,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import AllTasks from '@/components/AllTasks.vue'
 import { useTaskStore } from '@/stores/task'
 import { generateEntities } from '@/test-utils/generators'
-import type { Task } from '@/domain/models/task'
+import { Status, type Task } from '@/domain/models/task'
 
 describe('AllTasks.vue', () => {
   beforeEach(() => {
@@ -26,6 +26,16 @@ describe('AllTasks.vue', () => {
     expect(wrapper.text()).toContain('Test Task')
   })
 
+  it('renders a task as completed if its status is completed', () => {
+    const store = useTaskStore()
+    store.tasks = generateEntities<Task>(1, 'Task', {
+      title: 'Test Task',
+      status: Status.Completed,
+    })
+    const wrapper = mount(AllTasks)
+    expect(wrapper.find('span').classes()).toContain('completed')
+  })
+
   it('adds a task when the enter key is pressed', async () => {
     const wrapper = mount(AllTasks)
     const input = wrapper.find('input')
@@ -42,5 +52,25 @@ describe('AllTasks.vue', () => {
     await input.setValue('New Task')
     await input.trigger('keyup.enter')
     expect(input.element.value).toBe('')
+  })
+
+  it('completes a task when the done button is clicked', async () => {
+    const store = useTaskStore()
+    store.tasks = generateEntities<Task>(1, 'Task', { title: 'Test Task' })
+    const wrapper = mount(AllTasks)
+    const button = wrapper.find('#btnCompleteTask')
+    await button.trigger('click')
+    expect(store.tasks[0].status).toBe('Completed')
+    expect(wrapper.find('span').classes()).toContain('completed')
+  })
+
+  it('removes a task when the remove button is clicked', async () => {
+    const store = useTaskStore()
+    store.tasks = generateEntities<Task>(1, 'Task', { title: 'Test Task' })
+    const wrapper = mount(AllTasks)
+    const button = wrapper.find('#btnRemoveTask')
+    await button.trigger('click')
+    expect(store.tasks).toHaveLength(0)
+    expect(wrapper.findAll('li')).toHaveLength(0)
   })
 })
