@@ -4,16 +4,18 @@ import { composeTask, sortTasksByCompleted } from '@/domain/logic/task';
 import { Status, type Task } from '@/domain/models/task';
 import { computed } from 'vue';
 import TaskItem from './TaskItem.vue';
+import TaskCreator from './TaskCreator.vue';
 
 const taskStore = useTaskStore();
 
 const sortedTasks = computed(() => sortTasksByCompleted(taskStore.tasks))
 
-const handleTaskSubmit = (event: Event) => {
-  const task = (event.target as HTMLInputElement).value;
-  taskStore.addTask(composeTask(task));
-
-  (event.target as HTMLInputElement).value = '';
+const handleTaskSubmit = ({ title, priority }: Partial<Task>) => {
+  if (title && priority) {
+    taskStore.addTask(composeTask(title, priority));
+  } else {
+    console.error('Task title and priority are required');
+  }
 }
 
 const completeTask = (task: Task) => {
@@ -35,9 +37,7 @@ const removeTask = (task: Task) => {
   <div>
     <h1>Tasks</h1>
   </div>
-  <div>
-    <input type="text" placeholder="Add a task" @keyup.enter="handleTaskSubmit" />
-  </div>
+  <TaskCreator v-on:create="handleTaskSubmit" />
   <div>
     <ul>
       <TaskItem v-for="task in sortedTasks" :key="task.id" :task="task" v-on:complete="completeTask"

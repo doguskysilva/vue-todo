@@ -6,7 +6,7 @@ import { generateTask } from '@/test-utils/generators'
 describe('createTask', () => {
   it('should create a task', () => {
     const title = 'Do something'
-    const task = composeTask(title)
+    const task = composeTask(title, Priority.Low)
 
     expect(task.id).toBeDefined()
     expect(task.title).toBe(title)

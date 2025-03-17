@@ -1,13 +1,13 @@
 import { composeTask } from '@/domain/logic/task'
 import { createUser } from '@/domain/logic/user'
-import type { Task } from '@/domain/models/task'
+import { Priority, type Task } from '@/domain/models/task'
 import type { User } from '@/domain/models/User'
 
 type Entity = User | Task
 
 export function generateTask(overrides?: Partial<Task>): Task {
   return {
-    ...composeTask('Test Task'),
+    ...composeTask('Test Task', Priority.Low),
     ...overrides,
   }
 }
