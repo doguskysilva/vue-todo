@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
 import { getGreetingMessage } from './domain/logic/time'
+import AllTasks from './components/AllTasks.vue'
 
 const greetingMessage = ref(getGreetingMessage(new Date()))
 </script>
@@ -17,7 +17,7 @@ const greetingMessage = ref(getGreetingMessage(new Date()))
   </header>
 
   <main>
-    <TheWelcome />
+    <AllTasks />
   </main>
 </template>
 
