@@ -3,6 +3,7 @@ import { useTaskStore } from '@/stores/task';
 import { composeTask, sortTasksByCompleted } from '@/domain/logic/task';
 import { Status, type Task } from '@/domain/models/task';
 import { computed } from 'vue';
+import TaskItem from './TaskItem.vue';
 
 const taskStore = useTaskStore();
 
@@ -28,12 +29,6 @@ const completeTask = (task: Task) => {
 const removeTask = (task: Task) => {
   taskStore.removeTask(task);
 }
-
-const taskClass = (task: Task) => {
-  return {
-    completed: task.status === Status.Completed
-  }
-}
 </script>
 
 <template>
@@ -45,18 +40,8 @@ const taskClass = (task: Task) => {
   </div>
   <div>
     <ul>
-      <li v-for="task in sortedTasks" :key="task.id">
-        <span :class="taskClass(task)">{{ task.title }}</span>
-
-        <button v-if="!task.completedAt" id="btnCompleteTask" @click="completeTask(task)">Done</button>
-        <button v-if="!task.completedAt" id="btnRemoveTask" @click="removeTask(task)">Remove</button>
-      </li>
+      <TaskItem v-for="task in sortedTasks" :key="task.id" :task="task" v-on:complete="completeTask"
+        v-on:remove="removeTask" />
     </ul>
   </div>
 </template>
-
-<style scoped>
-.completed {
-  text-decoration: line-through;
-}
-</style>
