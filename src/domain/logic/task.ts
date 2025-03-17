@@ -10,3 +10,15 @@ export function composeTask(title: string): Task {
     completedAt: null,
   }
 }
+
+export function sortTasksByCompleted(tasks: Task[]): Task[] {
+  return tasks.sort((a, b) => {
+    if (a.completedAt && !b.completedAt) {
+      return 1
+    }
+    if (!a.completedAt && b.completedAt) {
+      return -1
+    }
+    return 0
+  })
+}

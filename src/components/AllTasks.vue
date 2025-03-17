@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { useTaskStore } from '@/stores/task';
-import { composeTask } from '@/domain/logic/task';
+import { composeTask, sortTasksByCompleted } from '@/domain/logic/task';
 import { Status, type Task } from '@/domain/models/task';
+import { computed } from 'vue';
 
 const taskStore = useTaskStore();
+
+const sortedTasks = computed(() => sortTasksByCompleted(taskStore.tasks))
 
 const handleTaskSubmit = (event: Event) => {
   const task = (event.target as HTMLInputElement).value;
@@ -42,10 +45,11 @@ const taskClass = (task: Task) => {
   </div>
   <div>
     <ul>
-      <li v-for="task in taskStore.tasks" :key="task.id">
+      <li v-for="task in sortedTasks" :key="task.id">
         <span :class="taskClass(task)">{{ task.title }}</span>
-        <button id="btnCompleteTask" @click="completeTask(task)">Done</button>
-        <button id="btnRemoveTask" @click="removeTask(task)">Remove</button>
+
+        <button v-if="!task.completedAt" id="btnCompleteTask" @click="completeTask(task)">Done</button>
+        <button v-if="!task.completedAt" id="btnRemoveTask" @click="removeTask(task)">Remove</button>
       </li>
     </ul>
   </div>
