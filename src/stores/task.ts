@@ -12,6 +12,16 @@ export const useTaskStore = defineStore('tasks', () => {
     tasks.value.push(newTask)
   }
 
+  const updateTask = (updatedTask: Task) => {
+    const index = tasks.value.findIndex((task) => task.id === updatedTask.id)
+    tasks.value[index] = updatedTask
+  }
+
+  const removeTask = ({ id }: Task) => {
+    const index = tasks.value.findIndex((task) => task.id === id)
+    tasks.value.splice(index, 1)
+  }
+
   watch(
     tasks,
     (newTasks) => {
@@ -20,5 +30,5 @@ export const useTaskStore = defineStore('tasks', () => {
     { deep: true },
   )
 
-  return { tasks, addTask }
+  return { tasks, addTask, updateTask, removeTask }
 })
