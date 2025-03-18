@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Status, type Task } from '@/domain/models/task';
+import { Priority, Status, type Task } from '@/domain/models/task';
 
 const props = defineProps<{ task: Task; }>()
 
@@ -18,11 +18,17 @@ const taskClass = (task: Task) => {
     completed: task.status === Status.Completed
   }
 }
+
+const iconsPriority = {
+  [Priority.Low]: '⬇️',
+  [Priority.Medium]: '➡️',
+  [Priority.High]: '⬆️'
+}
 </script>
 
 <template>
   <li>
-    <span :class="taskClass(task)">{{ task.title }}</span>
+    {{ iconsPriority[task.priority] }} <span :class="taskClass(task)">{{ task.title }}</span>
     <button v-if="!task.completedAt" id="btnCompleteTask" @click="hadleCompleteTask">Done</button>
     <button v-if="!task.completedAt" id="btnRemoveTask" @click="handleRemoveTask">Remove</button>
   </li>
