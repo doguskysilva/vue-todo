@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import { useTaskStore } from '@/stores/task';
-import { composeTask } from '@/domain/logic/task';
+import { composeTask, sortTasksByCompleted } from '@/domain/logic/task';
 import { Status, type Task } from '@/domain/models/task';
+import { computed } from 'vue';
+import TaskItem from './TaskItem.vue';
+import TaskCreator from './TaskCreator.vue';
 
 const taskStore = useTaskStore();
 
-const handleTaskSubmit = (event: Event) => {
-  const task = (event.target as HTMLInputElement).value;
-  taskStore.addTask(composeTask(task));
+const sortedTasks = computed(() => sortTasksByCompleted(taskStore.tasks))
 
-  (event.target as HTMLInputElement).value = '';
+const handleTaskSubmit = ({ title, priority }: Partial<Task>) => {
+  if (title && priority) {
+    taskStore.addTask(composeTask(title, priority));
+  } else {
+    console.error('Task title and priority are required');
+  }
 }
 
 const completeTask = (task: Task) => {
@@ -25,34 +31,17 @@ const completeTask = (task: Task) => {
 const removeTask = (task: Task) => {
   taskStore.removeTask(task);
 }
-
-const taskClass = (task: Task) => {
-  return {
-    completed: task.status === Status.Completed
-  }
-}
 </script>
 
 <template>
   <div>
     <h1>Tasks</h1>
   </div>
-  <div>
-    <input type="text" placeholder="Add a task" @keyup.enter="handleTaskSubmit" />
-  </div>
+  <TaskCreator v-on:create="handleTaskSubmit" />
   <div>
     <ul>
-      <li v-for="task in taskStore.tasks" :key="task.id">
-        <span :class="taskClass(task)">{{ task.title }}</span>
-        <button id="btnCompleteTask" @click="completeTask(task)">Done</button>
-        <button id="btnRemoveTask" @click="removeTask(task)">Remove</button>
-      </li>
+      <TaskItem v-for="task in sortedTasks" :key="task.id" :task="task" v-on:complete="completeTask"
+        v-on:remove="removeTask" />
     </ul>
   </div>
 </template>
-
-<style scoped>
-.completed {
-  text-decoration: line-through;
-}
-</style>
