@@ -34,12 +34,10 @@ const removeTask = (task: Task) => {
 </script>
 
 <template>
-  <div>
-    <h1>Tasks</h1>
-  </div>
-  <TaskCreator v-on:create="handleTaskSubmit" />
-  <div>
-    <ul>
+  <div class="w-full">
+    <h1 class="text-4xl mb-4">Tasks</h1>
+    <TaskCreator v-on:create="handleTaskSubmit" />
+    <ul role="list" class="divide-y divide-gray-100 dark:divide-gray-800 mt-4">
       <TaskItem v-for="task in sortedTasks" :key="task.id" :task="task" v-on:complete="completeTask"
         v-on:remove="removeTask" />
     </ul>
