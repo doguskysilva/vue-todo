@@ -36,7 +36,7 @@ const handleCreateTask = () => {
         @click="handleCreateTask">Add</button>
     </div>
     <p v-if="errorMessage" class="rounded-sm border- border-red-400 bg-red-200 text-red-800 px-2 py-1 mt-2 flex">
-      <span class="grow">{{ errorMessage }}</span>
+      <span class="grow" id="error">{{ errorMessage }}</span>
       <span aria-hidden="true" @click="errorMessage = ''" class="flex-none cursor-pointer">✖</span>
     </p>
   </div>

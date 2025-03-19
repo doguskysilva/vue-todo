@@ -26,7 +26,7 @@ describe('TaskCreator.vue', () => {
   it('displays an error message if the task title is empty and not emit the create event', async () => {
     const wrapper = mount(TaskCreator)
     await wrapper.find('#btnCreateTask').trigger('click')
-    expect(wrapper.find('.error').text()).toBe('Task title is required')
+    expect(wrapper.find('#error').text()).toBe('Task title is required')
     expect(wrapper.emitted('create')).toBeUndefined()
   })
 })
