@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { useTaskStore } from '@/stores/task';
-import { composeTask, sortTasksByCompleted } from '@/domain/logic/task';
-import { Status, type Task } from '@/domain/models/task';
+import { completeTask, composeTask, filterTasksCompletedBeforeToday, sortTasksByCompleted } from '@/domain/logic/task';
+import { type Task } from '@/domain/models/task';
 import { computed } from 'vue';
 import TaskItem from './TaskItem.vue';
 import TaskCreator from './TaskCreator.vue';
 
 const taskStore = useTaskStore();
 
-const sortedTasks = computed(() => sortTasksByCompleted(taskStore.tasks))
+const sortedTasks = computed(() =>
+  sortTasksByCompleted(filterTasksCompletedBeforeToday(taskStore.tasks))
+)
 
 const handleTaskSubmit = ({ title, priority }: Partial<Task>) => {
   if (title && priority) {
@@ -18,17 +20,13 @@ const handleTaskSubmit = ({ title, priority }: Partial<Task>) => {
   }
 }
 
-const completeTask = (task: Task) => {
+const handleCompleteTask = (task: Task) => {
   taskStore.updateTask(
-    {
-      ...task,
-      status: Status.Completed,
-      completedAt: new Date()
-    }
+    completeTask(task)
   );
 }
 
-const removeTask = (task: Task) => {
+const handleRemoveTask = (task: Task) => {
   taskStore.removeTask(task);
 }
 </script>
@@ -38,8 +36,8 @@ const removeTask = (task: Task) => {
     <h1 class="text-4xl mb-4">Tasks</h1>
     <TaskCreator v-on:create="handleTaskSubmit" />
     <ul role="list" class="divide-y divide-gray-100 dark:divide-gray-800 mt-4">
-      <TaskItem v-for="task in sortedTasks" :key="task.id" :task="task" v-on:complete="completeTask"
-        v-on:remove="removeTask" />
+      <TaskItem v-for="task in sortedTasks" :key="task.id" :task="task" v-on:complete="handleCompleteTask"
+        v-on:remove="handleRemoveTask" />
     </ul>
   </div>
 </template>
