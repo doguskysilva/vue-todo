@@ -9,6 +9,10 @@ const errorMessage = ref('')
 const task = ref('')
 const priority = ref(priorities[0])
 
+const setPriority = (newPriority: Priority) => {
+  priority.value = newPriority
+}
+
 const handleCreateTask = () => {
   if (!task.value.trim()) {
     errorMessage.value = 'Task title is required'
@@ -25,15 +29,23 @@ const handleCreateTask = () => {
     <div class="flex space-x-2">
       <input type="text" placeholder="Add a task" v-model="task" @keyup.enter="handleCreateTask"
         class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
-      <select v-model="priority"
-        class="block rounded-md bg-indigo-600 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-ind">
-        <option v-for="priority in priorities" :key="priority" :value="priority">
-          {{ priority }}
-        </option>
-      </select>
-      <button id="btnCreateTask"
-        class="inline-block rounded-sm border px-12 py-3 text-sm font-medium border-indigo-600 bg-indigo-600 text-white hover:bg-transparent hover:text-indigo-600 focus:ring-3 focus:outline-hidden"
-        @click="handleCreateTask">Add</button>
+    </div>
+    <div class="grid grid-cols-3 gap-0 w-full mt-2 rounded-lg overflow-hidden" role="group">
+      <button v-for="(p, index) in priorities" :key="p" @click="setPriority(p)" :class="[
+        'py-1.5 text-sm font-medium transition-colors w-full',
+        // Border styles
+        index !== priorities.length - 1 ? 'border-r' : '',
+        // Active state
+        priority === p
+          ? 'bg-indigo-600 text-white border-indigo-600'
+          : 'bg-white text-indigo-600 border-indigo-600 hover:bg-indigo-50',
+        'border-y border-indigo-600',
+        // First and last items border
+        index === 0 ? 'border-l' : '',
+        index === priorities.length - 1 ? 'border-r' : ''
+      ]">
+        {{ p }}
+      </button>
     </div>
     <p v-if="errorMessage" class="rounded-sm border- border-red-400 bg-red-200 text-red-800 px-2 py-1 mt-2 flex">
       <span class="grow" id="error">{{ errorMessage }}</span>
