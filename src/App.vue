@@ -8,44 +8,15 @@ const greetingMessage = ref(getGreetingMessage(new Date()))
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <header class="flex px-8 lg:h-full items-center justify-center flex-col lg:flex-row">
+    <img alt="Todo Vue Logo" class="hidden lg:block lg:w-32 lg:h-32" src="./assets/logo.svg" />
 
-    <div class="wrapper">
+    <div>
       <HelloWorld :msg="greetingMessage" />
     </div>
   </header>
 
-  <main>
+  <main class="flex px-8 lg:h-full items-center">
     <AllTasks />
   </main>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
