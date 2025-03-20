@@ -8,15 +8,15 @@ const greetingMessage = ref(getGreetingMessage(new Date()))
 </script>
 
 <template>
-  <header class="flex p-8 lg:h-full items-center justify-center flex-col lg:flex-row">
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <header class="flex px-8 lg:h-full items-center justify-center flex-col lg:flex-row">
+    <img alt="Todo Vue Logo" class="hidden lg:block lg:w-32 lg:h-32" src="./assets/logo.svg" />
 
-    <div class="wrapper">
+    <div>
       <HelloWorld :msg="greetingMessage" />
     </div>
   </header>
 
-  <main class="flex p-8 lg:h-full items-center">
+  <main class="flex px-8 lg:h-full items-center">
     <AllTasks />
   </main>
 </template>

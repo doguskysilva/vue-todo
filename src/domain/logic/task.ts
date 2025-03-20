@@ -23,6 +23,12 @@ export function sortTasksByCompleted(tasks: Task[]): Task[] {
   })
 }
 
+export function sortTasksByCreatedAt(tasks: Task[]): Task[] {
+  return tasks.sort((a, b) => {
+    return b.createdAt.getTime() - a.createdAt.getTime()
+  })
+}
+
 export function completeTask(task: Task): Task {
   return {
     ...task,
@@ -37,6 +43,6 @@ export function filterTasksCompletedBeforeToday(tasks: Task[]): Task[] {
 
   return tasks.filter((task) => {
     if (!task.completedAt) return true
-    return new Date(task.completedAt).getTime() >= todayStart.getTime()
+    return task.completedAt.getTime() >= todayStart.getTime()
   })
 }

@@ -5,8 +5,15 @@ import { ref, watch } from 'vue'
 
 const storageService = new LocalStorageService()
 
+const parseDates = (task: Task) => ({
+  ...task,
+  createdAt: new Date(task.createdAt),
+  completedAt: task.completedAt ? new Date(task.completedAt) : null,
+})
+
 export const useTaskStore = defineStore('tasks', () => {
-  const tasks = ref<Task[]>(storageService.load<Task[]>('tasks') || [])
+  const storedTasks = storageService.load<Task[]>('tasks') || []
+  const tasks = ref<Task[]>(storedTasks.map(parseDates))
 
   const addTask = (newTask: Task) => {
     tasks.value.push(newTask)
