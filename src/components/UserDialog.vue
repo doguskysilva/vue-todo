@@ -6,15 +6,6 @@ const name = ref('')
 const errorMessage = ref('')
 const emit = defineEmits(['submit', 'close'])
 
-const close = () => {
-  if (!name.value.trim()) {
-    errorMessage.value = 'Please enter your name before continuing'
-    return
-  }
-  show.value = false
-  emit('close')
-}
-
 const submit = () => {
   if (!name.value.trim()) {
     errorMessage.value = 'Please enter your name before continuing'

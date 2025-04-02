@@ -30,12 +30,4 @@ describe('UserDialog.vue', () => {
     expect(wrapper.emitted('close')).toBeFalsy()
     expect(wrapper.text()).toContain('Please enter your name before continuing')
   })
-
-  it('should close the dialog when name is provided and cancel button is clicked', async () => {
-    const wrapper = mount(UserDialog)
-    const name = 'John Doe'
-    await wrapper.find('input').setValue(name)
-    await wrapper.find('button').trigger('click')
-    expect(wrapper.emitted('close')).toBeTruthy()
-  })
 })
