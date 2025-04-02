@@ -1,45 +1,39 @@
-# .
+# Vue Todo App
 
-This template should help get you started developing with Vue 3 in Vite.
+A Todo application built with Vue 3, TypeScript, and Pinia for state management. The application follows a lightweight DDD (Domain-Driven Design) approach.
 
-## Recommended IDE Setup
+## Project Structure
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+src/
+├── components/ # Vue components
+├── domain/ # Domain logic and models
+│ ├── logic/ # Business logic
+│ └── models/ # TypeScript interfaces and types
+├── services/ # Application services
+├── stores/ # Pinia stores
+└── test-utils/ # Testing utilities
 
-## Type Support for `.vue` Imports in TS
+## Key Features
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- Task management with priority levels
+- Local storage persistence
+- Dark mode support
+- User management
+- Task filtering and sorting
 
-## Customize configuration
+## Technical Details
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### Domain Models
 
-## Project Setup
+The application uses TypeScript interfaces to define its domain models:
 
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
+```typescript
+interface Task {
+  id: string
+  title: string
+  status: Status
+  priority: Priority
+  createdAt: Date // Stored as Date object
+  completedAt: Date | null
+}
 ```

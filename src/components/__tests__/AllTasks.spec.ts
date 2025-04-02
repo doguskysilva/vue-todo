@@ -52,8 +52,8 @@ describe('AllTasks.vue', () => {
     const task = generateTask({ title: 'Test Task' })
     store.tasks = [task]
     const wrapper = mount(AllTasks)
-    const button = wrapper.find('#btnCompleteTask')
-    await button.trigger('click')
+    const checkbox = wrapper.find('input[type="checkbox"]')
+    await checkbox.setValue(true)
     expect(store.tasks[0].status).toBe(Status.Completed)
     expect(wrapper.find('span').classes()).toContain('completed')
   })
@@ -70,23 +70,26 @@ describe('AllTasks.vue', () => {
   })
 
   it('sorts tasks correctly', () => {
+    const currentDate = new Date()
+    currentDate.setHours(0, 0, 0, 0)
+
     const store = useTaskStore()
     store.tasks = [
       generateTask({
         title: 'Task 1',
         status: Status.Completed,
-        completedAt: new Date('2023-01-01'),
+        completedAt: new Date(currentDate.getTime() + 2 * 60 * 60 * 1000),
       }),
       generateTask({ title: 'Task 2' }),
       generateTask({ title: 'Task 3' }),
       generateTask({
         title: 'Task 4',
         status: Status.Completed,
-        completedAt: new Date('2023-01-02'),
+        completedAt: new Date(currentDate.getTime() - 60 * 60 * 1000),
       }),
     ]
     const wrapper = mount(AllTasks)
     const taskTitles = wrapper.findAll('li span').map((span) => span.text())
-    expect(taskTitles).toEqual(['Task 2', 'Task 3', 'Task 1', 'Task 4'])
+    expect(taskTitles).toEqual(['Task 2', 'Task 3', 'Task 1'])
   })
 })
